@@ -9,12 +9,6 @@ import (
 	"testing"
 )
 
-func Check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 // assert fails the test if the condition is false.
 func Assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
 	if !condition {

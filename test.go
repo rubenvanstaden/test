@@ -9,29 +9,43 @@ import (
 	"testing"
 )
 
-// assert fails the test if the condition is false.
-func Assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
+var (
+	Reset  = "\033[0m"
+	Red    = "\033[31m"
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Blue   = "\033[34m"
+	Purple = "\033[35m"
+	Cyan   = "\033[36m"
+	Gray   = "\033[37m"
+	Black  = "\033[38m"
+	White  = "\033[39m"
+)
+
+// Fails the test if the condition is false.
+func Assert(tb testing.TB, condition bool, msg string) {
 	if !condition {
-		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: "+msg+"\033[39m\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
+		printPosition()
+		fmt.Printf(Red+"\tmsg: %s\n\n"+Reset, msg)
 		tb.FailNow()
 	}
 }
 
-// ok fails the test if an err is not nil.
+// Fails the test if an err is not nil.
 func Ok(tb testing.TB, err error) {
 	if err != nil {
-		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: unexpected error: %s\033[39m\n\n", filepath.Base(file), line, err.Error())
+		printPosition()
+		fmt.Printf(Red+"\tcatch error: %s\n\n"+Reset, err.Error())
 		tb.FailNow()
 	}
 }
 
-// equals fails the test if exp is not equal to act.
+// Fails the test if exp is not equal to act.
 func Equals(tb testing.TB, exp, act interface{}) {
 	if !reflect.DeepEqual(exp, act) {
-		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d:\n\n\texp: %#v\n\n\tgot: %#v\033[39m\n\n", filepath.Base(file), line, exp, act)
+		printPosition()
+		fmt.Printf(Red+"\twant: %#v\n\n"+Reset, exp)
+		fmt.Printf(Red+"\tgot: %#v\n\n"+Reset, exp)
 		tb.FailNow()
 	}
 }
@@ -39,8 +53,13 @@ func Equals(tb testing.TB, exp, act interface{}) {
 func Exists(tb testing.TB, filename string) {
 	_, err := os.Stat(filename)
 	if os.IsNotExist(err) {
-		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: "+filename+"\033[39m\n\n", filepath.Base(file), line)
+		printPosition()
+		fmt.Printf(Red+"\tno file: %s\n\n"+Reset, filename)
 		tb.FailNow()
 	}
+}
+
+func printPosition() {
+	_, file, line, _ := runtime.Caller(1)
+	fmt.Printf(Red+"%s:%d\n\n"+Reset, filepath.Base(file), line)
 }

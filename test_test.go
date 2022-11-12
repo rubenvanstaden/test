@@ -7,8 +7,8 @@ import (
 
 func TestUnit(t *testing.T) {
 
-	Assert(t, false, "testing message")
+	// Assert(t, false, "testing message")
 	// Ok(t, fmt.Errorf("Some error"))
 	// Equals(t, "want", "act")
-	// Exists(t, "/var/tmp/noexist")
+	Exists(t, "/var/tmp/noexist")
 }

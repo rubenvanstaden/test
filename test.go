@@ -7,26 +7,15 @@ import (
 	"reflect"
 	"runtime"
 	"testing"
-)
 
-var (
-	Reset  = "\033[0m"
-	Red    = "\033[31m"
-	Green  = "\033[32m"
-	Yellow = "\033[33m"
-	Blue   = "\033[34m"
-	Purple = "\033[35m"
-	Cyan   = "\033[36m"
-	Gray   = "\033[37m"
-	Black  = "\033[38m"
-	White  = "\033[39m"
+	"github.com/rubenvanstaden/color"
 )
 
 // Fails the test if the condition is false.
 func Assert(tb testing.TB, condition bool, msg string) {
 	if !condition {
 		printPosition()
-		fmt.Printf(Red+"\tmsg: %s\n\n"+Reset, msg)
+		fmt.Printf(color.InRed("\tmsg: %s\n\n"), msg)
 		tb.FailNow()
 	}
 }
@@ -35,31 +24,32 @@ func Assert(tb testing.TB, condition bool, msg string) {
 func Ok(tb testing.TB, err error) {
 	if err != nil {
 		printPosition()
-		fmt.Printf(Red+"\tcatch error: %s\n\n"+Reset, err.Error())
+		fmt.Printf(color.InRed("\tcatch: %s\n\n"), err.Error())
 		tb.FailNow()
 	}
 }
 
-// Fails the test if exp is not equal to act.
-func Equals(tb testing.TB, exp, act interface{}) {
-	if !reflect.DeepEqual(exp, act) {
+// Fails the test if "want" is not equal to "got".
+func Equals(tb testing.TB, want, got interface{}) {
+	if !reflect.DeepEqual(want, got) {
 		printPosition()
-		fmt.Printf(Red+"\twant: %#v\n\n"+Reset, exp)
-		fmt.Printf(Red+"\tgot: %#v\n\n"+Reset, exp)
+		fmt.Printf(color.InRed("\twant: %#v\n\n"), want)
+		fmt.Printf(color.InRed("\tgot: %#v\n\n"), want)
 		tb.FailNow()
 	}
 }
 
+// Fails the test if the given file doesn't exist.
 func Exists(tb testing.TB, filename string) {
 	_, err := os.Stat(filename)
 	if os.IsNotExist(err) {
 		printPosition()
-		fmt.Printf(Red+"\tno file: %s\n\n"+Reset, filename)
+		fmt.Printf(color.InRed("\tno file: %s\n\n"), filename)
 		tb.FailNow()
 	}
 }
 
 func printPosition() {
 	_, file, line, _ := runtime.Caller(1)
-	fmt.Printf(Red+"%s:%d\n\n"+Reset, filepath.Base(file), line)
+	fmt.Printf(color.InRed("%s:%d\n\n"), filepath.Base(file), line)
 }

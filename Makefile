@@ -10,4 +10,4 @@ test.unit:
 	go test -count=1 -run=Unit $(UNIT_TEST_PATH)
 
 test.unit.debug:
-	go test -count=1 -run=Unit $(UNIT_TEST_PATH) -v
+	go test -count=1 -run=Unit -failfast $(UNIT_TEST_PATH) -v

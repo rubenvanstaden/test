@@ -6,18 +6,27 @@ import (
 )
 
 func TestUnit_SuccessEquals(t *testing.T) {
-
 	Equals(t, "want", "want")
-}
-
-func TestUnit_FailEquals(t *testing.T) {
-
-	Equals(t, "want", "act")
 }
 
 func TestUnit_SuccessAssert(t *testing.T) {
 
 	Assert(t, true, "testing message")
+}
+
+func TestUnit_SuccessOk(t *testing.T) {
+
+	Ok(t, nil)
+}
+
+func TestUnit_SuccessExists(t *testing.T) {
+
+	// Exists(t, "/var/tmp/noexist")
+}
+
+func TestUnit_FailEquals(t *testing.T) {
+
+	Equals(t, "want", "act")
 }
 
 func TestUnit_FailAssert(t *testing.T) {
